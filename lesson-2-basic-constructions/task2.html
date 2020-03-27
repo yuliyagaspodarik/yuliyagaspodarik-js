@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Задание 2</title>
+</head>
+<body>
+  <script>
+      var lastName;
+
+      do {
+          lastName = prompt('Ваша фамилия?');
+      } while (lastName == '');
+
+      var firstName;
+
+      do {
+          firstName = prompt('Ваше имя?');
+      } while (firstName == '');
+
+      var patronymic;
+
+      do {
+          patronymic = prompt('Ваше отчество?');
+      } while (patronymic == '');
+
+      var age;
+
+      do {
+          age = parseInt(prompt('Ваш возраст?'));
+      } while (isNaN(age));
+
+      var genderIndex = confirm('Ваш пол - мужской?');
+      var ageFive = age + 5;
+      var ageYear = age * 365;
+      var gender;
+
+      if (genderIndex) {
+          gender = 'мужской';
+      } else {
+          gender = 'женский';
+      }
+
+      var pension;
+
+      if (age < 55) {
+          pension = 'нет';
+      } else {
+          if (genderIndex && age < 60) {
+              pension = 'нет';
+          } else {
+              pension = 'да';
+          }
+      }
+
+      alert('ваше ФИО: ' + lastName + ' ' + firstName + ' ' + patronymic + '\n' +
+          'ваш возраст в годах: ' + age + '\n' +
+          'ваш возраст в днях: ' + ageYear + '\n' +
+          'через 5 лет вам будет: ' + ageFive + '\n' +
+          'ваш пол: ' + gender + '\n' +
+          'вы на пенсии: ' + pension);
+  </script>
+</body>
+</html>
