@@ -9,28 +9,36 @@
       'use strict';
 
       var lastName;
+      lastName = prompt('Ваша фамилия?').trim();
 
-      do {
-          lastName = prompt('Ваша фамилия?');
-      } while (lastName == '');
+      while (lastName == '') {
+          alert('Поле не должно быть пустым');
+          lastName = prompt('Ваша фамилия?').trim();
+      }
 
       var firstName;
+      firstName = prompt('Ваше имя?').trim();
 
-      do {
-          firstName = prompt('Ваше имя?');
-      } while (firstName == '');
+      while (firstName == '') {
+          alert('Поле не должно быть пустым');
+          firstName = prompt('Ваше имя?').trim();
+      }
 
       var patronymic;
+      patronymic = prompt('Ваше отчество?').trim();
 
-      do {
-          patronymic = prompt('Ваше отчество?');
-      } while (patronymic == '');
+      while (patronymic == '') {
+          alert('Поле не должно быть пустым');
+          patronymic = prompt('Ваше отчество?').trim();
+      }
 
       var age;
+      age = parseInt(prompt('Ваш возраст?'));
 
-      do {
+      while (isNaN(age)) {
+          alert('Введите число');
           age = parseInt(prompt('Ваш возраст?'));
-      } while (isNaN(age));
+      }
 
       var genderIndex = confirm('Ваш пол - мужской?');
       var ageFive = age + 5;
