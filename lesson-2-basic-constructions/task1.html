@@ -8,10 +8,10 @@
       'use strict';
 
       var text = prompt('Введите фразу:');
-      var result = 0;
 
       function letters(text) {
           text = text.toLowerCase();
+          var result = 0;
 
           for (var i = 0; i < text.length; i++) {
               if (text[i] == 'а' || text[i] == 'е' || text[i] == 'ё' || text[i] == 'и' || text[i] == 'о' || text[i] == 'у' || text[i] == 'ы' || text[i] == 'э' || text[i] == 'ю' || text[i] == 'я') {
