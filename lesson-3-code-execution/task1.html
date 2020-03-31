@@ -18,12 +18,14 @@
       function maxTasksCompleted(tasksComleted) {
           var maxValue = 0;
           var menMaxValue;
+
           for (var name in tasksComleted) {
               if (tasksComleted[name] > maxValue) {
                   maxValue = tasksComleted[name];
                   menMaxValue = name;
               }
           }
+
           return menMaxValue;
       }
 
