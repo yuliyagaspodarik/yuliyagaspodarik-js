@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Задание 2</title>
+</head>
+<body>
+  <script>
+      'use strict';
+
+      var image = {
+          width: 100,
+          height: 400,
+          title: 'Cool image'
+      };
+
+      function multiplyNumeric(image) {
+          for (var k in image) {
+              if (isFinite(image[k])) {
+                  image[k] *= 2;
+                  console.log(k + ': ' + image[k]);
+              } else {
+                  console.log(k + ': ' + image[k]);
+              }
+          }
+      }
+
+      multiplyNumeric(image);
+  </script>
+</body>
+</html>
