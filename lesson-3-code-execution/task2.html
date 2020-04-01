@@ -15,12 +15,12 @@
       };
 
       function multiplyNumeric(image) {
-          for (var k in image) {
-              if (isFinite(image[k])) {
-                  image[k] *= 2;
-                  console.log(k + ': ' + image[k]);
+          for (var key in image) {
+              if (isFinite(image[key])) {
+                  image[key] *= 2;
+                  console.log(key + ': ' + image[key]);
               } else {
-                  console.log(k + ': ' + image[k]);
+                  console.log(key + ': ' + image[key]);
               }
           }
       }

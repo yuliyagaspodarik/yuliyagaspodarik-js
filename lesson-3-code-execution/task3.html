@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Задание3</title>
+</head>
+<body>
+  <script>
+      'use strict';
+
+      var slagaemoe = [];
+      var sum = 0;
+
+      do {
+          var a = prompt('Введите слагаемое:');
+          if (a === '' || a === 'null' || isNaN(a)) {
+              break;
+          } else {
+              slagaemoe.push(a);
+              sum += +a;
+          }
+      } while (a);
+
+      console.log(sum);
+  </script>
+</body>
+</html>
