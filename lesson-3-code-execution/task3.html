@@ -8,15 +8,15 @@
   <script>
       'use strict';
 
-      var slagaemoe = [];
+      var terms = [];
       var sum = 0;
 
       do {
           var a = prompt('Введите слагаемое:');
-          if (a === '' || a === 'null' || isNaN(a)) {
+          if (!a) {
               break;
           } else {
-              slagaemoe.push(a);
+              terms.push(parseFloat(a));
               sum += +a;
           }
       } while (a);
