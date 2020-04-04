@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Задание3</title>
+</head>
+<body>
+  <script>
+      'use strict';
+
+      var terms = [];
+      var sum = 0;
+
+      do {
+          var a = prompt('Введите слагаемое:');
+          if (!a) {
+              break;
+          } else {
+              terms.push(parseFloat(a));
+              sum += +a;
+          }
+      } while (a);
+
+      console.log(sum);
+  </script>
+</body>
+</html>
