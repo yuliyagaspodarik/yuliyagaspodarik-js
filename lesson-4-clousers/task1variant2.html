@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>task1variant2</title>
+</head>
+<body>
+  <script>
+    //этот способ работает корректно (выводит шахматной доской) только для нечетной величины решетки
+    'use strict';
+
+    var value = parseInt(prompt('Введите величину решетки'));
+
+    function sharpTable(valueTable) {
+      var arrSharp = [];
+
+      for (var k = 0; k < Math.ceil((valueTable * valueTable) / 2); k++) {
+        arrSharp.push('\u0023');
+      }
+
+      var s = arrSharp.join(' ');
+      var strSharp = '';
+
+      for (var i = 0; i < s.length; i++) {
+        if (i % valueTable === 0 && i > 0) {
+          strSharp += '\n';
+        }
+
+        strSharp += s[i];
+      }
+
+      return strSharp;
+    }
+
+    console.log(sharpTable(value));
+  </script>
+</body>
+</html>
