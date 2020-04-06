@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>task2</title>
+</head>
+<body>
+  <script>
+    'use strict';
+
+    var obj = {
+      className: 'open menu'
+    };
+
+    function removeSpecifiedClass(obj, cls) {
+      var str = obj.className;
+      var arr = str.split(' ');
+
+      while (arr.indexOf(cls) !== -1) {
+        arr.splice(arr.indexOf(cls), 1)
+      }
+
+      return arr.join(' ');
+    }
+
+    console.log(removeSpecifiedClass(obj, 'menu'));
+  </script>
+</body>
+</html>
