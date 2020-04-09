@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>task1variant3</title>
+</head>
+<body>
+  <script>
+    //этот способ работает, но некорректно - выводит не шахматной доской
+    'use strict';
+
+    var value = parseInt(prompt('Введите величину решетки'));
+
+    function sharpTable(valueTable) {
+      var arrSharp = {
+        true: '\u0023',
+        false: '\u0000'
+      };
+      var strSharp = '';
+
+      for (var i = 0; i < valueTable; i++) {
+        for (var k = 0; k < valueTable; k++) {
+          k % 2 === 0 ? strSharp += arrSharp.true : strSharp += arrSharp.false
+        }
+
+        strSharp += '\n';
+      }
+
+      return strSharp;
+    }
+
+    console.log(sharpTable(value));
+  </script>
+</body>
+</html>

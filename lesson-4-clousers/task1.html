@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>task1</title>
+</head>
+<body>
+  <script>
+    'use strict';
+
+    var value = parseInt(prompt('Введите величину решетки'));
+
+    function sharpTable(valueTable) {
+      var strSharp = '';
+
+      for (var k = 0; k < valueTable; k++) {
+        if (k % 2 !== 0) {
+          for (var i = 0; i < valueTable; i++) {
+            (i % 2 !== 0) ? strSharp += '\u0023' : strSharp += '\u0000';
+          }
+        } else {
+          for (var i = 0; i < valueTable; i++) {
+            (i % 2 !== 0) ? strSharp += '\u0000' : strSharp += '\u0023';
+          }
+        }
+
+        strSharp += '\n';
+      }
+
+      return strSharp;
+    }
+
+    console.log(sharpTable(value));
+  </script>
+</body>
+</html>
