@@ -8,6 +8,8 @@
   <script>
     'use strict';
 
+    'use strict';
+
     var objJohn = {
       name: 'John',
       bills: [124, 48, 268, 180, 42],
@@ -33,11 +35,9 @@
       }
     };
 
-    console.log(objJohn.calcCosts());
-    /*objJohn.calcCosts();
-    console.log(objJohn.tips);
-    console.log(objJohn.finalCosts);
-    //console.log(objJohn);*/
+    objJohn.calcCosts();
+    console.log('John\'s tips: ' + objJohn.tips);
+    console.log('Final costs which paid John\'s family: ' + objJohn.finalCosts);
 
     var objMark = {
       name: 'Mark',
@@ -66,7 +66,8 @@
     }
 
     calcCostsMark(objMark);
-    console.log(objMark);
+    console.log('Mark\'s tips: ' + objMark.tips);
+    console.log('Final costs which paid Mark\'s family: ' + objMark.finalCosts);
 
     function averageTip(object) {
       var sumTips = 0;
@@ -82,9 +83,9 @@
     }
 
     if (averageTip(objMark) > averageTip(objJohn)) {
-      console.log(objMark.name + '\'s family paid the highest tips on average - ' + objMark.averageTips);
+      console.log(objMark.name + '\'s family paid the highest tips on average - ' + objMark.averageTips + '$');
     } else if (averageTip(objMark) < averageTip(objJohn)) {
-      console.log(objJohn.name + '\'s family paid the highest tips on average - ' + objJohn.averageTips);
+      console.log(objJohn.name + '\'s family paid the highest tips on average - ' + objJohn.averageTips + '$');
     } else console.log('They paid the same tips.');
 
   </script>
