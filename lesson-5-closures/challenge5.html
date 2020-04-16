@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>challenge5</title>
+</head>
+<body>
+  <script>
+    'use strict';
+
+    'use strict';
+
+    var objJohn = {
+      name: 'John',
+      bills: [124, 48, 268, 180, 42],
+      tips: [],
+      finalCosts: [],
+      calcCosts: function () {
+        for (var i = 0; i < this.bills.length; i++) {
+          var percentValue;
+
+          if (this.bills[i] < 50) {
+            percentValue = 0.2;
+          } else if (this.bills[i] >= 50 && this.bills[i] <= 200) {
+            percentValue = 0.15;
+          } else {
+            percentValue = 0.1;
+          }
+
+          this.tips.push(Math.round((this.bills[i] * percentValue) / 0.01) * 0.01);
+          this.finalCosts.push(this.bills[i] + this.tips[i]);
+        }
+
+        return this;
+      }
+    };
+
+    objJohn.calcCosts();
+    console.log('John\'s tips: ' + objJohn.tips);
+    console.log('Final costs which paid John\'s family: ' + objJohn.finalCosts);
+
+    var objMark = {
+      name: 'Mark',
+      bills: [77, 375, 110, 45],
+      tips: [],
+      finalCosts: []
+    };
+
+    function calcCostsMark(object) {
+      for (var j = 0; j < object.bills.length; j++) {
+        var percentValue2;
+
+        if (object.bills[j] < 100) {
+          percentValue2 = 0.2;
+        } else if (object.bills[j] >= 100 && object.bills[j] <= 300) {
+          percentValue2 = 0.1;
+        } else {
+          percentValue2 = 0.25;
+        }
+
+        object.tips.push(Math.round((object.bills[j] * percentValue2) / 0.01) * 0.01);
+        object.finalCosts.push(object.bills[j] + object.tips[j]);
+      }
+
+      return object;
+    }
+
+    calcCostsMark(objMark);
+    console.log('Mark\'s tips: ' + objMark.tips);
+    console.log('Final costs which paid Mark\'s family: ' + objMark.finalCosts);
+
+    function averageTip(object) {
+      var sumTips = 0;
+
+      for (var k = 0; k < object.tips.length; k++) {
+        sumTips += object.tips[k];
+      }
+
+      var averageTips = sumTips / object.tips.length;
+      object.averageTips = averageTips;
+
+      return averageTips;
+    }
+
+    if (averageTip(objMark) > averageTip(objJohn)) {
+      console.log(objMark.name + '\'s family paid the highest tips on average - ' + objMark.averageTips + '$');
+    } else if (averageTip(objMark) < averageTip(objJohn)) {
+      console.log(objJohn.name + '\'s family paid the highest tips on average - ' + objJohn.averageTips + '$');
+    } else console.log('They paid the same tips.');
+
+  </script>
+</body>
+</html>
