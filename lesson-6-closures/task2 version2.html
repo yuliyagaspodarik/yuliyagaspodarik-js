@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>task2</title>
+</head>
+<body>
+  <script>
+    'use strict';
+
+    function interviewQuestion(profession) {
+      return function (name) {
+        var answer;
+        switch (profession) {
+          case 'designer':
+            answer = name + ' can you please explain what UX design is?';
+            break;
+          case 'teacher':
+            answer = 'What subject do you teach ' + name + '?';
+            break;
+          case 'other':
+            answer = 'Hello ' + name + ', what do you do?';
+            break;
+        }
+
+        return answer;
+      }
+    }
+
+    console.log(interviewQuestion('teacher')('John'));
+  </script>
+</body>
+</html>
