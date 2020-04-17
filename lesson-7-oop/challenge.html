@@ -8,59 +8,75 @@
   <script>
     'use strict';
 
-    function Question(name, [wrongAnswer1, wrongAnswer2, wrongAnswer3], rightAnswer,) {
-      var self = this;
-      self.name = name;
-      self.wrongAnswers = [wrongAnswer1, wrongAnswer2, wrongAnswer3];
-      self.rightAnswer = rightAnswer;
-    }
+    function newGame() {
 
-    Question.prototype.viewQuestion = function () {
-      console.log(this.name);
+      function Question(name, [wrongAnswer1, wrongAnswer2, wrongAnswer3], rightAnswer) {
+        var self = this;
 
-      for (var i = 0; i < 3; i++) {
-        console.log((i + 1) + ' ' + this.wrongAnswers[i] + '\n');
+        self.name = name;
+        self.wrongAnswers = [wrongAnswer1, wrongAnswer2, wrongAnswer3];
+        self.rightAnswer = rightAnswer;
       }
 
-      console.log(4 + ' ' + this.rightAnswer);
-    };
+      Question.prototype.showQuestion = function () {
+        console.log(this.name);
 
-    Question.prototype.numberQuestion = function (number) {
-      this.number = number;
-    };
+        for (var i = 0; i < 3; i++) {
+          console.log((i + 1) + ' ' + this.wrongAnswers[i] + '\n');
+        }
 
-    const arrQuestions = [];
+        console.log(4 + ' ' + this.rightAnswer);
+      };
 
-    const question1 = new Question('Какой из указанных тегов является непарным?', ['html', 'script', 'h1'], 'img');
-    question1.numberQuestion(1);
-    arrQuestions.push(question1);
+      Question.prototype.numberQuestion = function (number) {
+        this.number = number;
+      };
 
-    const question2 = new Question('Укажите элемент, не являющийся блочным:', ['p', 'div', 'h2'], 'span');
-    question2.numberQuestion(2);
-    arrQuestions.push(question2);
+      const arrQuestions = [];
 
-    const question3 = new Question('Внутрь какого элемента, помещается элемент meta?', ['body', 'script', 'style'], 'head');
-    question3.numberQuestion(3);
-    arrQuestions.push(question3);
+      const question1 = new Question('Какой из указанных тегов является непарным?', ['html', 'script', 'h1'], 'img');
+      question1.numberQuestion(1);
+      arrQuestions.push(question1);
 
+      const question2 = new Question('Укажите элемент, не являющийся блочным:', ['p', 'div', 'h2'], 'span');
+      question2.numberQuestion(2);
+      arrQuestions.push(question2);
 
-    var randomVar = Math.floor(Math.random() * 3) + 1;
+      const question3 = new Question('Внутрь какого элемента, помещается элемент meta?', ['body', 'script', 'style'], 'head');
+      question3.numberQuestion(3);
+      arrQuestions.push(question3);
 
-    for (var k = 0; k < 3; k++) {
-      if (arrQuestions[k].number === randomVar) {
-        arrQuestions[k].viewQuestion();
-      }
+      var numberOfSelectQuestion;
+
+      var selectQuestion = function () {
+        var randomVariable = Math.floor(Math.random() * 3) + 1;
+        numberOfSelectQuestion = randomVariable;
+
+        for (var k = 0; k < 3; k++) {
+          if (arrQuestions[k].number === randomVariable) {
+            return arrQuestions[k].showQuestion();
+          }
+        }
+      };
+
+      var dataProcessing = function () {
+        do {
+          var userAnswer = parseInt(prompt('Введите номер правильного варианта ответа на вопрос:'));
+        } while (isNaN(userAnswer));
+
+        if (userAnswer !== 4) {
+          console.log('К сожалению Вы ошиблись. Правильный ответ ' + arrQuestions[numberOfSelectQuestion - 1].rightAnswer + '!');
+        } else {
+          console.log('Верно! Это правльный ответ.');
+        }
+      };
+
+      selectQuestion();
+
+      setTimeout(dataProcessing, 5000);
     }
 
-    do {
-      var userAnswer = parseInt(prompt('Введите номер правильного варианта ответа на вопрос:'));
-    } while (isNaN(userAnswer));
-
-    if (userAnswer !== 4) {
-      console.log('К сожалению Вы ошиблись. Правильный ответ ' + arrQuestions[randomVar - 1].rightAnswer + '!');
-    } else {
-      console.log('Верно! Это правльный ответ.');
-    }
+    newGame();
   </script>
 </body>
 </html>
