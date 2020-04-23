@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>task3</title>
+</head>
+<body>
+  <script>
+    'use strict';
+
+    var arr = ['воз', 'киборг', 'корсет', 'ЗОВ', 'гробик', 'костер', 'сектор'];
+
+    function anClean(arr) {
+      var readyArr = arr.slice();
+
+      for (var i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].toLowerCase().split('').sort().join('');
+      }
+
+      for (i = 0; i < arr.length; i++) {
+        arr.splice(arr.indexOf(arr[i]), 1);
+        readyArr.splice(arr.indexOf(arr[i]), 1);
+      }
+
+      return readyArr;
+    }
+
+    console.log(anClean(arr));
+  </script>
+</body>
+</html>
