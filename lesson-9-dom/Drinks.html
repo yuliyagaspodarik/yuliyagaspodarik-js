@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Something about drinks</title>
+  <script type="text/javascript" src="app.js"></script>
+
+</head>
+<body>
+  <div>
+    <h1>Информация о напитках</h1>
+  </div>
+  <input type='button' value='ввод информации о напитках' onclick='AddDrink()'>
+  <input type='button' value='получение информации о напитке' onclick='ShowDrink()'>
+  <input type='button' value='удаление информации о напитке' onclick='RemoveDrink()'>
+  <input type='button' value='перечень всех напитков' onclick='listDrink()'>
+
+  <script>
+    'use strict';
+
+    var DrinkStorage = new HashStorage();
+
+    function AddDrink() {
+      var name = prompt('Название напитка:');
+      name = name.toLowerCase();
+      var informAlcohol = confirm('Напиток алкогольный?');
+      var aboutRecipe = prompt('Рецепт приготовления:');
+
+      var description = function () {
+        var informationAboutDrink = {
+          alcohol: informAlcohol,
+          recipe: aboutRecipe
+        };
+        return informationAboutDrink;
+      };
+      DrinkStorage.AddValue(name, description());
+
+    }
+
+    function ShowDrink() {
+      var whatDrink = prompt('Какой напиток вас интересует?');
+      var informationForOut = DrinkStorage.GetValue(whatDrink.toLowerCase());
+
+      alert('напиток ' + whatDrink + '\n ' +
+        'алкогольный: ' + informationForOut.alcohol + '\n' +
+        'рецепт приготовления: ' + informationForOut.recipe);
+    }
+
+    function RemoveDrink() {
+      var drinkToDelete = prompt('Какой напиток вы хотите удалить?');
+      /*почему-то некорректоно работал...
+      (DrinkStorage.DeleteValue(drinkToDelete.toLowerCase())) ? alert(drinkToDelete + ' удален') : alert('Такого напитка нет с списке');*/
+
+      if (drinkToDelete in DrinkStorage) {
+        DrinkStorage.DeleteValue(drinkToDelete.toLowerCase());
+        alert('Напиток ' + drinkToDelete + ' удален');
+      } else {
+        alert('Такого напитка нет с списке');
+      }
+    }
+
+    function listDrink() {
+      alert(DrinkStorage.GetKeys());
+    }
+
+
+  </script>
+</body>
+</html>
