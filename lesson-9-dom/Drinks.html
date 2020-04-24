@@ -4,12 +4,11 @@
   <meta charset="UTF-8">
   <title>Something about drinks</title>
   <script type="text/javascript" src="app.js"></script>
-
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div>
-    <h1>Информация о напитках</h1>
-  </div>
+  <h1>Информация о напитках</h1>
+  <div class="information"></div>
   <input type='button' value='ввод информации о напитках' onclick='AddDrink()'>
   <input type='button' value='получение информации о напитке' onclick='ShowDrink()'>
   <input type='button' value='удаление информации о напитке' onclick='RemoveDrink()'>
@@ -23,6 +22,7 @@
     function AddDrink() {
       var name = prompt('Название напитка:');
       name = name.toLowerCase();
+
       var informAlcohol = confirm('Напиток алкогольный?');
       var aboutRecipe = prompt('Рецепт приготовления:');
 
@@ -33,17 +33,15 @@
         };
         return informationAboutDrink;
       };
-      DrinkStorage.AddValue(name, description());
 
+      DrinkStorage.AddValue(name, description());
     }
 
     function ShowDrink() {
       var whatDrink = prompt('Какой напиток вас интересует?');
       var informationForOut = DrinkStorage.GetValue(whatDrink.toLowerCase());
 
-      alert('напиток ' + whatDrink + '\n ' +
-        'алкогольный: ' + informationForOut.alcohol + '\n' +
-        'рецепт приготовления: ' + informationForOut.recipe);
+      document.querySelector('.information').textContent = 'Напиток - ' + whatDrink + ', алкогольный: ' + informationForOut.alcohol + ', рецепт приготовления: ' + informationForOut.recipe;
     }
 
     function RemoveDrink() {
@@ -53,17 +51,15 @@
 
       if (drinkToDelete in DrinkStorage) {
         DrinkStorage.DeleteValue(drinkToDelete.toLowerCase());
-        alert('Напиток ' + drinkToDelete + ' удален');
+        document.querySelector('.information').textContent = 'Напиток ' + drinkToDelete + ' удален';
       } else {
-        alert('Такого напитка нет с списке');
+        document.querySelector('.information').textContent = 'Такого напитка нет с списке';
       }
     }
 
     function listDrink() {
-      alert(DrinkStorage.GetKeys());
+      document.querySelector('.information').textContent = DrinkStorage.GetKeys();
     }
-
-
   </script>
 </body>
 </html>
