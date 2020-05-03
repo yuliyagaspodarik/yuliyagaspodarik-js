@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dyn_Form</title>
+</head>
+<body>
+  <form action="https://fe.it-academy.by/TestForm.php" name="formForSite"></form>
+  <script>
+    'use strict';
+
+    var formElements = [
+      {
+        label: 'Разработчики:',
+        type: 'text',
+        width: '600',
+        id: 'developers',
+        name: 'developers'
+      },
+      {
+        label: 'Название сайта:',
+        type: 'text',
+        width: '600',
+        id: 'title',
+        name: 'title'
+      },
+      {
+        label: 'URL сайта:',
+        type: 'text',
+        width: '400',
+        id: 'url',
+        name: 'url'
+      },
+      {
+        label: 'Дата запуска сайта:',
+        type: 'date',
+        width: '200',
+        id: 'date',
+        name: 'date'
+      },
+      {
+        label: 'Посетителей в сутки:',
+        type: 'text',
+        width: '200',
+        id: 'guests',
+        name: 'guests'
+      },
+      {
+        label: 'E-mail для связи:',
+        type: 'email',
+        width: '200',
+        id: 'email',
+        name: 'email'
+      },
+      {
+        label: 'Рубрика каталога:',
+        type: 'select',
+        options: ['здоровье', 'домашний уют', 'бытовая техника'],
+        width: '400',
+        id: 'section',
+        name: 'section'
+      },
+      {
+        label: 'Размещение:',
+        type: 'radio',
+        options: [
+          {label: 'бесплатное', value: 'free', id: 'free'},
+          {label: 'платное', value: 'paid', id: 'paid'},
+          {label: 'VIP', value: 'vip', id: 'vip'}
+        ],
+        id: 'advantage',
+        name: 'advantage'
+      },
+      {
+        label: 'Разрешить отзывы:',
+        type: 'checkbox',
+        id: 'reviews',
+        name: 'reviews'
+      },
+      {
+        label: 'Описание сайта:',
+        type: 'textarea',
+        width: '800',
+        rows: '20',
+        id: 'description',
+        name: 'description',
+      },
+      {
+        type: 'submit',
+        value: 'Опубликовать',
+        width: '200'
+      }
+    ];
+
+    function CreateForm(formElements) {
+      var formUsed = document.forms['formForSite'];
+      formUsed.style.cssText = 'font-family: Arial; font-size: 1.2rem;';
+      var formClone = formUsed.cloneNode();
+      var inviteText = document.createTextNode('Для внесения вашего сайта в каталог, заполните форму:');
+      formClone.appendChild(inviteText);
+      lineBreak();
+      lineBreak();
+
+      for (var i = 0; i < formElements.length; i++) {
+        var elemType = formElements[i].type;
+
+        switch (elemType) {
+          case 'text':
+            buildLabelElement(i);
+            var inputT = buildInputElement(i);
+            formClone.appendChild(inputT);
+            lineBreak();
+            break;
+
+          case 'date':
+            buildLabelElement(i);
+            var inputD = buildInputElement(i);
+            formClone.appendChild(inputD);
+            lineBreak();
+            break;
+
+          case 'email':
+            buildLabelElement(i);
+            var inputE = buildInputElement(i);
+            formClone.appendChild(inputE);
+            lineBreak();
+            break;
+
+          case 'checkbox':
+            buildLabelElement(i);
+            var inputCh = buildInputElement(i);
+            inputCh.style.cssText = 'width: 1.2rem; height: 1.2rem';
+            inputCh.checked = true;
+            formClone.appendChild(inputCh);
+            lineBreak();
+            break;
+
+          case 'submit':
+            var inputS = buildInputElement(i);
+            inputS.setAttribute('value', formElements[i].value);
+            formClone.appendChild(inputS);
+            break;
+
+          case 'textarea':
+            buildLabelElement(i);
+            lineBreak();
+            var textarea = buildTextareaElement(i);
+            formClone.appendChild(textarea);
+            lineBreak();
+            break;
+
+          case 'select':
+            buildLabelElement(i);
+            var select = buildSelectElement(i);
+            formClone.appendChild(select);
+            lineBreak();
+            break;
+
+          case 'radio':
+            buildLabelElement(i);
+
+            for (var m = 0; m < formElements[i].options.length; m++) {
+              var radio = buildRadioElement(i, m);
+              radio.style.cssText = 'width: 1.2rem; height: 1.2rem';
+              formClone.appendChild(radio);
+              var radioElementLabel = document.createElement('label');
+              radioElementLabel.setAttribute('for', formElements[i].options[m].id);
+              formClone.appendChild(radioElementLabel);
+              var radioElementLabelText = document.createTextNode(formElements[i].options[m].label);
+              radioElementLabel.appendChild(radioElementLabelText);
+            }
+            lineBreak();
+            break;
+        }
+      }
+
+      var bodyElement = document.querySelector('body');
+      bodyElement.replaceChild(formClone, formUsed);
+
+      function lineBreak() {
+        var newLine = document.createElement('br');
+        formClone.appendChild(newLine);
+      }
+
+      function buildLabelElement(item) {
+        var labelElement = document.createElement('label');
+        labelElement.style.cssText = 'float: left; width: 200px;';
+        labelElement.setAttribute('for', formElements[item].id);
+        formClone.appendChild(labelElement);
+        var labelText = document.createTextNode(formElements[item].label);
+        labelElement.appendChild(labelText);
+        return labelElement;
+      }
+
+      function buildRadioElement(item, m) {
+        var radioElement = document.createElement('input');
+        radioElement.setAttribute('value', formElements[item].options[m].value);
+        setStyleElement.call(formElements[item], radioElement);
+        setAttributeFromObject.call(formElements[item], radioElement);
+        return radioElement;
+      }
+
+      function buildSelectElement(item) {
+        var selectElement = document.createElement('select');
+        selectElement.setAttribute('id', formElements[item].id);
+        selectElement.setAttribute('name', formElements[item].name);
+        selectElement.style.cssText = 'width: ' + formElements[item].width + 'px; background-color: lightgrey; font-size: 1.2rem; margin: 0.2rem;';
+
+        for (var k = 0; k < formElements[item].options.length; k++) {
+          var optionElement = document.createElement('option');
+          optionElement.setAttribute('value', formElements[item].options[k]);
+          selectElement.appendChild(optionElement);
+          var optionElementText = document.createTextNode(formElements[item].options[k]);
+          optionElement.appendChild(optionElementText);
+        }
+        return selectElement;
+      }
+
+      function buildTextareaElement(item) {
+        var textAreaElement = document.createElement('textarea');
+        setStyleElement.call(formElements[item], textAreaElement);
+        setAttributeFromObject.call(formElements[item], textAreaElement);
+        return textAreaElement;
+      }
+
+      function buildInputElement(item) {
+        var inputElement = document.createElement('input');
+        setStyleElement.call(formElements[item], inputElement);
+        setAttributeFromObject.call(formElements[item], inputElement);
+        return inputElement;
+      }
+
+      function setStyleElement(element) {
+        element.style.cssText = 'width: ' + this.width + 'px; font-size: 1.2rem; margin: 0.2rem;';
+        return element;
+      }
+
+      function setAttributeFromObject(element) {
+        for (var key in this) {
+          if (key !== 'width' && key !== 'label' && key !== 'options') {
+            element.setAttribute(key, this[key]);
+          }
+        }
+        return element;
+      }
+    }
+
+    CreateForm(formElements);
+  </script>
+</body>
+</html>
