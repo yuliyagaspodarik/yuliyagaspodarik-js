@@ -1,0 +1,15 @@
+#wrapper {
+    height: 100vh;
+    margin: 0;
+}
+#barash,
+#krosh,
+#umnik {
+    width: 20%;
+}
+
+#barash:hover,
+#krosh:hover,
+#umnik:hover {
+    cursor: pointer;
+}

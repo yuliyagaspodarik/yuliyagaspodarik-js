@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MouseEvent</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="wrapper">
+    <img id="barash" src="img/barash.png">
+    <img id="krosh" src="img/krosh.png">
+    <img id="umnik" src="img/umnik.png">
+  </div>
+  <script>
+    'use strict';
+
+    var dragImage = null;
+    var dragShiftX;
+    var dragShiftY;
+
+    for (var n = 0; n < document.images.length; n++) {
+      document.images[n].onmousedown = dragStart;
+      document.images[n].onmousemove = dragMove;
+      document.images[n].onmouseup = dragStop;
+    }
+    for (var i = document.images.length; i > 0 ; i--) {
+      document.images[i].style.position = 'absolute';
+      document.images[i].style.left = document.images[i].offsetLeft + 'px';
+      document.images[i].style.top = document.images[i].offsetTop + 'px';
+    }
+
+
+    function dragStart(EO) {
+      dragImage = EO.target;
+      dragShiftX = EO.pageX - dragImage.getBoundingClientRect().left;
+      dragShiftY = EO.pageY - dragImage.getBoundingClientRect().top;
+      dragImage.style.position = 'absolute';
+      dragImage.style.left = EO.pageX - dragShiftX + 'px';
+      dragImage.style.top = EO.pageY - dragShiftY + 'px';
+
+      dragImage.style.cursor = 'grabbing';
+      dragImage.style.zIndex = '1000';
+      EO.preventDefault();
+    }
+
+    function dragMove(EO) {
+      dragImage = EO.target;
+      dragImage.style.left = EO.pageX - dragShiftX + 'px';
+      dragImage.style.top = EO.pageY - dragShiftY + 'px';
+    }
+
+    function dragStop(EO) {
+      dragImage = EO.target;
+      dragImage.onmousemove = null;
+      dragImage.style.cursor = 'pointer';
+      EO.target = null;
+    }
+
+  </script>
+</body>
+</html>
