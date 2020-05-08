@@ -51,7 +51,8 @@
 
     function dragStop(EO) {
       dragImage = EO.target;
-      dragImage.onmousemove = null;
+      dragImage.onmousemove = null; //я понимаю, что здесь отменяю этот обработчик вообще, поэтому он не срабатывает второй раз, но
+      //EO.stopPropagation();  так тоже не работало
       dragImage.style.cursor = 'pointer';
       EO.target = null;
     }
