@@ -34,7 +34,7 @@
         var xDigit = centerX - rForDrawDigit - rDigit + Math.sin(angle) * rForDrawDigit;
         var yDigit = centerY - rForDrawDigit - rDigit - Math.cos(angle) * rForDrawDigit;
         var circleForDigit = document.createElement('div');
-        circleForDigit.setAttribute('class', 'circle-for-digit'); // посмотреть именование классов
+        circleForDigit.setAttribute('class', 'circle-for-digit');
         circleForDigit.style.position = 'absolute';
         circleForDigit.style.left = xDigit + rForDrawDigit + 'px';
         circleForDigit.style.top = yDigit + rForDrawDigit + 'px';
