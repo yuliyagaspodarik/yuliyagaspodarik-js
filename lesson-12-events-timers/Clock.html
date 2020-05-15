@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clock</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="wrapper"></div>
+  <script>
+    'use strict';
+
+    const rClock = 300; // радиус циферблата
+    const rForDrawDigit = 250; // радиус расположения цифр на циферблате
+    const rDigit = 40; // радиус цифры
+
+    function drawClock() {
+      // отрисовка циферблата
+      var wrapper = document.getElementById('wrapper');
+      var cloneWrapper = wrapper.cloneNode(true);
+      var clockFace = document.createElement('div');
+      clockFace.setAttribute('id', 'clock-face');
+      clockFace.style.position = 'relative';
+      clockFace.style.width = rClock * 2 + 'px';
+      clockFace.style.height = rClock * 2 + 'px';
+      cloneWrapper.appendChild(clockFace);
+
+      // отрисовка цифр
+      var centerX = clockFace.getBoundingClientRect().left + rClock;
+      var centerY = clockFace.getBoundingClientRect().top + rClock;
+
+      for (var h = 1; h <= 12; h++) {
+        var angle = (h / 12) * Math.PI * 2;
+        var xDigit = centerX - rForDrawDigit - rDigit + Math.sin(angle) * rForDrawDigit;
+        var yDigit = centerY - rForDrawDigit - rDigit - Math.cos(angle) * rForDrawDigit;
+        var circleForDigit = document.createElement('div');
+        circleForDigit.setAttribute('class', 'circle-for-digit'); // посмотреть именование классов
+        circleForDigit.style.position = 'absolute';
+        circleForDigit.style.left = xDigit + rForDrawDigit + 'px';
+        circleForDigit.style.top = yDigit + rForDrawDigit + 'px';
+        circleForDigit.style.width = rDigit * 2 + 'px';
+        circleForDigit.style.height = rDigit * 2 + 'px';
+        circleForDigit.innerHTML = h;
+        clockFace.appendChild(circleForDigit);
+      }
+
+      // отрисовка стрелок
+      var secondArrow;
+      var hourArrow;
+      var minuteArrow;
+
+      createArrow(secondArrow, rForDrawDigit, 'second-arrow');
+      createArrow(hourArrow, rClock / 2, 'hour-arrow');
+      createArrow(minuteArrow, rForDrawDigit, 'minute-arrow');
+
+      function createArrow(name, width, ident) {
+        name = document.createElement('div');
+        name.setAttribute('id', ident);
+        name.style.width = width + 'px';
+        name.style.position = 'absolute';
+        name.style.left = centerX + 'px';
+        name.style.top = centerY + 'px';
+        clockFace.appendChild(name);
+      }
+
+      var disk = document.createElement('div');
+      disk.setAttribute('id', 'disk');
+      disk.style.width = '30px';
+      disk.style.height = '30px';
+      disk.style.position = 'absolute';
+      disk.style.top = centerX - 15 + 'px';
+      disk.style.left = centerY - 15 + 'px';
+      clockFace.appendChild(disk);
+
+      // отрисовка электронного табло
+      var divForTime = document.createElement('div');
+      divForTime.setAttribute('id', 'time');
+      divForTime.style.position = 'absolute';
+      divForTime.style.left = centerX - rForDrawDigit / 2 + 'px';
+      divForTime.style.top = centerY - rForDrawDigit / 2 + 'px';
+      divForTime.style.width = rForDrawDigit + 'px';
+      divForTime.style.height = rDigit * 2 + 'px';
+      clockFace.appendChild(divForTime);
+
+      // электронные часы
+      function UpdateTime() {
+        var currTime = new Date();
+        var secondsForArrow = currTime.getSeconds();
+        var minutesForArrow = currTime.getMinutes();
+        var hoursForArrow = currTime.getHours();
+        var currTimeStr = FormatDateTime(currTime);
+        document.getElementById('time').innerHTML = currTimeStr;
+
+        var sec = document.getElementById('second-arrow');
+        sec.style.transform = 'rotate(' + (360 * (secondsForArrow / 60) - 90) + 'deg)';//requestanimationframe?
+        sec.style.transformOrigin = 'left';
+
+        var min = document.getElementById('minute-arrow');
+        min.style.transform = 'rotate(' + (360 * minutesForArrow / 60 - 90) + 'deg)';
+        min.style.transformOrigin = 'left';
+
+        var hour = document.getElementById('hour-arrow');
+        hour.style.transform = 'rotate(' + ((360 * (hoursForArrow % 12) / 12 + minutesForArrow / 2) - 90) + 'deg)';
+        hour.style.transformOrigin = 'left';
+      }
+
+      function FormatDateTime(dt) {
+        var hours = dt.getHours();
+        var minutes = dt.getMinutes();
+        var seconds = dt.getSeconds();
+        return Str0L(hours, 2) + ':' + Str0L(minutes, 2) + ':' + Str0L(seconds, 2);
+      }
+
+      function Str0L(val, len) {
+        var strVal = val.toString();
+        while (strVal.length < len)
+          strVal = '0' + strVal;
+        return strVal;
+      }
+
+      window.onload = setInterval(UpdateTime, 1000);
+      document.body.replaceChild(cloneWrapper, wrapper);
+    }
+
+    drawClock();
+  </script>
+</body>
+</html>
