@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clock SVG</title>
+</head>
+<body>
+  <div id="wrapper"></div>
+  <script>
+    'use strict';
+
+    const rClock = 300; // радиус циферблата
+    const rForDrawDigit = 250; // радиус расположения цифр на циферблате
+    const rDigit = 40; // радиус цифры
+
+    (function drawClockSvg() {
+      var wrapper = document.getElementById('wrapper');
+      var svgBox = drawSvgContainer('clock', 2 * rClock);
+      var clockFace = drawCircle('lightgrey', rClock, rClock, rClock);
+      setShadow(clockFace);
+
+      (function drawDigits() {
+        for (var h = 1; h <= 12; h++) {
+          var angle = (h / 12) * Math.PI * 2;
+          var xDigit = rClock + Math.sin(angle) * rForDrawDigit;
+          var yDigit = rClock - Math.cos(angle) * rForDrawDigit;
+
+          var circleForDigit = drawCircle('white', xDigit, yDigit, rDigit);
+          setShadow(circleForDigit);
+
+          var xD = xDigit - (rDigit / 2);
+          var yD = yDigit + (rDigit / 2);
+          var clockDigit = drawDigit(h, xD, yD);
+
+          function drawDigit(h, xD, yD) {
+            var clockDigit = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            clockDigit.setAttribute('x', xD);
+            clockDigit.setAttribute('y', yD);
+            clockDigit.setAttribute('font-size', '3.5rem');
+            clockDigit.setAttribute('font-weight', '700');
+            clockDigit.textContent = h;
+            svgBox.appendChild(clockDigit);
+            return clockDigit;
+          }
+        }
+      })();
+
+      var minuteArrow = drawArrow('minute-arrow', (rClock * 2 - rDigit * 2), 'black', '10px');
+      var hourArrow = drawArrow('hour-arrow', (rClock + rForDrawDigit / 2), 'black', '15px');
+      var secondArrow = drawArrow('second-arrow', (rClock * 2 - rDigit * 2), 'red', '5px');
+
+      var centerCircle = drawCircle('black', rClock, rClock, 12);
+
+      function drawSvgContainer(name, size) {
+        var svgContainer = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgContainer.setAttribute('id', name);
+        svgContainer.setAttribute('width', (size + 10));
+        svgContainer.setAttribute('height', (size + 10));
+        svgContainer.setAttribute('viewBox', '0 0 ' + (size + 10) + ' ' + (size + 10));
+        wrapper.appendChild(svgContainer);
+        return svgContainer;
+      }
+
+      function drawCircle(color, x, y, r) {
+        var clockCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        clockCircle.setAttribute('fill', color);
+        clockCircle.setAttribute('cx', x);
+        clockCircle.setAttribute('cy', y);
+        clockCircle.setAttribute('r', r);
+        svgBox.appendChild(clockCircle);
+        return clockCircle;
+      }
+
+      function setShadow(el) {
+        el.setAttribute('filter', 'url(#shadow)');
+        return el;
+      }
+
+      (function drawShadow() {
+        var defsForFilter = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        svgBox.appendChild(defsForFilter);
+        var filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
+        filter.setAttribute('id', 'shadow');
+        defsForFilter.appendChild(filter);
+        var blur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
+        blur.setAttribute('in', 'SourceAlpha');
+        blur.setAttribute('stdDeviation', '2');
+        filter.appendChild(blur);
+        var offset = document.createElementNS('http://www.w3.org/2000/svg', 'feOffset');
+        offset.setAttribute('dx', '2');
+        offset.setAttribute('dy', '2');
+        filter.appendChild(offset);
+        var merge = document.createElementNS('http://www.w3.org/2000/svg', 'feMerge');
+        filter.appendChild(merge);
+        var mergeShadow = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+        merge.appendChild(mergeShadow);
+        var mergeBuilding = document.createElementNS('http://www.w3.org/2000/svg', 'feMergeNode');
+        mergeBuilding.setAttribute('in', 'SourceGraphic');
+        merge.appendChild(mergeBuilding);
+      })();
+
+      function drawArrow(id, size, color, width) {
+        var arrow = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        arrow.setAttribute('id', id);
+        arrow.setAttribute('x1', rClock);
+        arrow.setAttribute('y1', rClock);
+        arrow.setAttribute('x2', size);
+        arrow.setAttribute('y2', rClock);
+        arrow.setAttribute('stroke', color);
+        arrow.setAttribute('stroke-width', width);
+        arrow.setAttribute('stroke-linecap', 'round');
+        arrow.setAttribute('opacity', '0.8');
+        svgBox.appendChild(arrow);
+        return arrow;
+      }
+
+      (function drawDigitClockPanel() {
+        var panel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        panel.setAttribute('id', 'time');
+        panel.setAttribute('x', rClock - rDigit * 2);
+        panel.setAttribute('y', rClock - rDigit * 2);
+        panel.setAttribute('font-size', '3rem');
+        panel.setAttribute('font-weight', '400');
+        svgBox.appendChild(panel);
+        return panel;
+      })();
+
+      function UpdateTime() {
+        var currTime = new Date();
+        var secondsForArrow = currTime.getSeconds();
+        var minutesForArrow = currTime.getMinutes();
+        var hoursForArrow = currTime.getHours();
+        var currTimeStr = FormatDateTime(currTime);
+        document.getElementById('time').textContent = currTimeStr;
+
+        var sec = document.getElementById('second-arrow');
+        sec.setAttribute('transform', 'rotate(' + (360 * (secondsForArrow / 60) - 90) + ' ' + rClock + ' ' + rClock + ')');
+
+        var min = document.getElementById('minute-arrow');
+        min.setAttribute('transform', 'rotate(' + (360 * minutesForArrow / 60 - 90) + ' ' + rClock + ' ' + rClock + ')');
+
+        var hour = document.getElementById('hour-arrow');
+        hour.setAttribute('transform', 'rotate(' + ((360 * (hoursForArrow % 12) / 12 + minutesForArrow / 2) - 90) + ' ' + rClock + ' ' + rClock + ')');
+      }
+
+      function FormatDateTime(dt) {
+        var hours = dt.getHours();
+        var minutes = dt.getMinutes();
+        var seconds = dt.getSeconds();
+        return Str0L(hours, 2) + ':' + Str0L(minutes, 2) + ':' + Str0L(seconds, 2);
+      }
+
+      function Str0L(val, len) {
+        var strVal = val.toString();
+        while (strVal.length < len)
+          strVal = '0' + strVal;
+        return strVal;
+      }
+
+      setInterval(UpdateTime, 1000);
+    })();
+  </script>
+</body>
+</html>
