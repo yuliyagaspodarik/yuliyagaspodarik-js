@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clock Canvas</title>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <script>
+    //здесь цифровые часы ведут себя корректно
+    //но стрелки - нет
+    //rotate() считает углы не так, как в первом врианте
+    'use strict';
+
+    const rClock = 300; // радиус циферблата
+    const rForDrawDigit = 250; // радиус расположения цифр на циферблате
+    const rDigit = 40; // радиус цифры
+
+    function drawClockCanvas() {
+      var canvas = document.getElementById('canvas');
+      canvas.width = canvas.height = rClock * 2;
+      var context = canvas.getContext('2d');
+      context.save();
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      context.beginPath();
+      context.arc(rClock, rClock, rClock, 0, Math.PI * 2);
+      context.fillStyle = "lightgray";
+      context.fill();
+      context.closePath();
+
+      context.save();
+      for (var h = 1; h <= 12; h++) {
+        var angle = (h / 12) * Math.PI * 2;
+        var xDigit = rClock + Math.sin(angle) * rForDrawDigit;
+        var yDigit = rClock - Math.cos(angle) * rForDrawDigit;
+        context.beginPath();
+        context.shadowColor = '#727070';
+        context.shadowOffsetX = 2;
+        context.shadowOffsetY = 2;
+        context.shadowBlur = 10;
+        context.fillStyle = 'white';
+        context.arc(xDigit, yDigit, rDigit, 0, Math.PI * 2);
+        context.fill();
+        context.closePath();
+        context.fillStyle = 'black';
+        context.font = 'bold 3.5rem Times New Roman';
+        context.fillText(h, (xDigit - rDigit / 2), (yDigit + rDigit / 2));
+      }
+      context.restore();
+
+      var currTime = new Date();
+      var sec = currTime.getSeconds();
+      var min = currTime.getMinutes();
+      var hr = currTime.getHours();
+      var currTimeStr = FormatDateTime(currTime);
+      hr = hr >= 12 ? hr - 12 : hr;
+      var lengthSecondArrow = rClock * 2 - rDigit * 2;
+      var lengthMinuteArrow = rClock * 2 - rDigit * 2;
+      var lengthHourArrow = rClock + rForDrawDigit / 2;
+      var centerX = rClock;
+      var centerY = rClock;
+      context.save();
+      context.beginPath();
+      context.fillStyle = 'black';
+      context.font = 'normal 3rem Times New Roman';
+      context.fillText(currTimeStr, centerX - rDigit * 2, centerY - rDigit * 2);
+      context.stroke();
+      context.restore();
+
+      context.save();
+      context.rotate(sec * Math.PI / 30);
+      context.lineWidth = 5;
+      context.strokeStyle = 'red';
+      context.globalAlpha = 0.9;
+      context.lineCap = 'round';
+      context.beginPath();
+      context.moveTo(centerX, centerY);
+      context.lineTo(lengthSecondArrow, centerY);
+      context.stroke();
+      context.restore();
+
+      context.save();
+      context.rotate(-((Math.PI / 30) * min + (Math.PI / 1800) * sec));
+      context.lineWidth = 10;
+      context.strokeStyle = 'gray';
+      context.globalAlpha = 0.9;
+      context.lineCap = 'round';
+      context.beginPath();
+      context.moveTo(centerX, centerY);
+      context.lineTo(lengthMinuteArrow, centerY);
+      context.stroke();
+      context.restore();
+
+      context.save();
+      context.rotate(-(hr * (Math.PI / 6) + (Math.PI / 360) * min + (Math.PI / 21600) * sec));
+      context.lineWidth = 15;
+      context.strokeStyle = 'black';
+      context.globalAlpha = 0.9;
+      context.lineCap = 'round';
+      context.beginPath();
+      context.moveTo(centerX, centerY);
+      context.lineTo(lengthHourArrow, centerY);
+      context.save();
+      context.stroke();
+      context.restore();
+
+      function FormatDateTime(dt) {
+        var hours = dt.getHours();
+        var minutes = dt.getMinutes();
+        var seconds = dt.getSeconds();
+        return Str0L(hours, 2) + ':' + Str0L(minutes, 2) + ':' + Str0L(seconds, 2);
+      }
+
+      function Str0L(val, len) {
+        var strVal = val.toString();
+        while (strVal.length < len)
+          strVal = '0' + strVal;
+        return strVal;
+      }
+
+      window.requestAnimationFrame(drawClockCanvas);
+    }
+
+    window.requestAnimationFrame(drawClockCanvas);
+
+  </script>
+</body>
+</html>
