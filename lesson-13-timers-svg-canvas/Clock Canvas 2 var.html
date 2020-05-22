@@ -7,8 +7,8 @@
 <body>
   <canvas id="canvas"></canvas>
   <script>
+    //РАБОЧИЙ ВАРИАНТ
     //в этом варианте без rotate, смещение на угол заложено в LineTo
-    //стрелки идут, но неверное время
     //canvas сразу есть на странице
     //requestAnimationFrame
     'use strict';
@@ -59,6 +59,9 @@
       var lengthSecondArrow = rClock * 2 - rDigit * 2;
       var lengthMinuteArrow = rClock * 2 - rDigit * 2;
       var lengthHourArrow = rClock + rForDrawDigit / 2;
+      var  angleSA = 360 * (sec / 60);
+      var  angleMA = 360 * (min / 60);
+      var  angleHA = 360 * (hr % 12) / 12 + min / 2;
 
       context.save();
       context.beginPath();
@@ -75,7 +78,7 @@
       context.lineCap = 'round';
       context.beginPath();
       context.moveTo(rClock, rClock);
-      context.lineTo(rClock + (lengthMinuteArrow / 2) * Math.cos(Math.PI / 2 - min * (Math.PI / 180)), rClock - (lengthMinuteArrow / 2) * Math.sin(Math.PI / 2 - min * (Math.PI / 180)));//(rClock * 2 - rDigit * 2, rClock);
+      context.lineTo(rClock + (lengthMinuteArrow / 2) * Math.cos(Math.PI / 2 - angleMA * (Math.PI / 180)), rClock - (lengthMinuteArrow / 2) * Math.sin(Math.PI / 2 - angleMA * (Math.PI / 180)));
       context.stroke();
       context.restore();
 
@@ -86,7 +89,7 @@
       context.lineCap = 'round';
       context.beginPath();
       context.moveTo(rClock, rClock);
-      context.lineTo(rClock + (lengthHourArrow / 2) * Math.cos(Math.PI / 2 - hr * (Math.PI / 180)), rClock - (lengthHourArrow / 2) * Math.sin(Math.PI / 2 - hr * (Math.PI / 180)));//(rClock + rForDrawDigit / 2, rClock);
+      context.lineTo(rClock + (lengthHourArrow / 2) * Math.cos(Math.PI / 2 - angleHA * (Math.PI / 180)), rClock - (lengthHourArrow / 2) * Math.sin(Math.PI / 2 - angleHA * (Math.PI / 180)));
       context.save();
       context.stroke();
       context.restore();
@@ -98,7 +101,7 @@
       context.lineCap = 'round';
       context.beginPath();
       context.moveTo(rClock, rClock);
-      context.lineTo(rClock + (lengthSecondArrow / 2) * Math.cos(Math.PI / 2 - sec * (Math.PI / 180)), rClock - (lengthSecondArrow / 2) * Math.sin(Math.PI / 2 - sec * (Math.PI / 180)));//(lengthSecondArrow, rClock);
+      context.lineTo(rClock + (lengthSecondArrow / 2) * Math.cos(Math.PI / 2 - angleSA * (Math.PI / 180)), rClock - (lengthSecondArrow / 2) * Math.sin(Math.PI / 2 - angleSA * (Math.PI / 180)));
       context.stroke();
       context.restore();
 
