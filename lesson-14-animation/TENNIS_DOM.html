@@ -22,7 +22,7 @@
     var ballSize = 50;       // размер мяча
     var racketWidth = 15;    // ширина ракетки
     var racketHeight = 150;  // высота ракетки
-    var racketSpeed = 3;     //скорость ракеток
+    var racketSpeed = 4;     //скорость ракеток
 
     var requestAnimateFrame =
       window.requestAnimationFrame ||
@@ -123,8 +123,12 @@
       init() {
         this.ball.posX = widthField / 2 - ballSize / 2;
         this.ball.posY = heightField / 2 - ballSize / 2;
-        this.ball.speedX = Math.floor(Math.random() * 3) + 1;
-        this.ball.speedY = Math.floor(Math.random() * 3) + 1;
+        this.ball.speedY = Math.floor(Math.random() * 9) - 4;
+        var correctAngle = Math.floor(Math.random() * 9) - 4;
+        while (!correctAngle) {
+          correctAngle = Math.floor(Math.random() * 9) - 4;
+        }
+        this.ball.speedX = correctAngle;
         this.ball.update();
       },
       play() {
