@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Tennis Dom</title>
-  <link rel="stylesheet" href="dz14.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="wrapper">
@@ -116,8 +116,16 @@
         game.scrollLeft.update();
       },
       start() {
+        game.init();
         window.requestAnimateFrame(game.play);
         //setInterval(game.play, 40);
+      },
+      init() {
+        this.ball.posX = widthField / 2 - ballSize / 2;
+        this.ball.posY = heightField / 2 - ballSize / 2;
+        this.ball.speedX = Math.floor(Math.random() * 3) + 1;
+        this.ball.speedY = Math.floor(Math.random() * 3) + 1;
+        this.ball.update();
       },
       play() {
         game.posXBall();
