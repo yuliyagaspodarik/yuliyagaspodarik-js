@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Tennis Dom</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dz14.css">
 </head>
 <body>
   <div id="wrapper">
     <div id="score"><span id="left-score">0</span>:<span id="right-score">0</span></div>
-    <input id="start" type="button" value="страт!">
+    <input id="start" type="button" value="старт!">
     <div id="field">
       <div id="scroll-left"></div>
       <div id="scroll-right"></div>
@@ -17,6 +17,12 @@
   </div>
   <script>
     'use strict';
+    var widthField = 800;    // ширина поля
+    var heightField = 400;   // высота поля
+    var ballSize = 50;       // размер мяча
+    var racketWidth = 15;    // ширина ракетки
+    var racketHeight = 150;  // высота ракетки
+    var racketSpeed = 3;     //скорость ракеток
 
     var requestAnimateFrame =
       window.requestAnimationFrame ||
@@ -27,15 +33,23 @@
       function (callback) {
         window.setTimeout(callback, 1000 / 60);
       };
-
+    var cancelAnimateFrame =
+      window.cancelAnimationFrame ||
+      window.webkitCancelAnimationFrame ||
+      window.mozCancelAnimationFrame ||
+      window.oCancelAnimationFrame ||
+      window.msCancelAnimationFrame ||
+      function (callback) {
+        window.clearTimeout(callback);
+      };
     var game = {
       field: {
-        width: 800,
-        height: 400
+        width: widthField,
+        height: heightField
       },
       scrollLeft: {
-        width: 15,
-        height: 150,
+        width: racketWidth,
+        height: racketHeight,
         posX: 0,
         posY: 0,
         SpeedY: 0,
@@ -44,8 +58,8 @@
         }
       },
       scrollRight: {
-        width: 15,
-        height: 150,
+        width: racketWidth,
+        height: racketHeight,
         posX: 785,
         posY: 0,
         SpeedY: 0,
@@ -54,12 +68,12 @@
         }
       },
       ball: {
-        width: 50,
-        height: 50,
-        posX: 400,/*this.field.width / 2,*/
-        posY: 200,/*this.field.height / 2,*/
-        speedX: 1,
-        speedY: 1,
+        width: ballSize,
+        height: ballSize,
+        posX: widthField / 2 - ballSize / 2,
+        posY: heightField / 2 - ballSize / 2,
+        speedX: Math.floor(Math.random() * 3) + 1,
+        speedY: Math.floor(Math.random() * 3) + 1,
         update: function () {
           document.getElementById('ball').style.transform = 'translate(' + this.posX + 'px, ' + this.posY + 'px)';
         }
@@ -81,7 +95,7 @@
         }
       },
       setSpeed(obj) {
-        obj.SpeedY = 3;
+        obj.SpeedY = racketSpeed;
       },
       scroll(event) {
         switch (event.code) {
@@ -102,23 +116,26 @@
         game.scrollLeft.update();
       },
       start() {
-        window.requestAnimationFrame(game.play);
+        window.requestAnimateFrame(game.play);
         //setInterval(game.play, 40);
       },
       play() {
         game.posXBall();
         game.posYBall();
-        if (game.ball.posX + game.ball.width >= game.field.width) {
-          game.goalRight();
+        if (game.ball.posX + game.ball.width > game.field.width) {
+          game.ball.posX = game.field.width - game.ball.width;
+          game.counterLeft++;
+          game.goal();
         }
         if (game.ball.posX < 0) {
-          game.goalLeft();
+          game.ball.posX = 0;
+          game.counterRight++;
+          game.goal();
         }
-        game.updateScore();
         game.ball.update();
         game.scrollLeft.update();
         game.scrollRight.update();
-        window.requestAnimationFrame(game.play);
+        window.requestAnimateFrame(game.play);
       },
       posXBall() {
         this.ball.posX += this.ball.speedX;
@@ -149,22 +166,13 @@
         this.ball.speedX = 0;
         this.ball.speedY = 0;
       },
-      goalRight() {
-        this.ball.posX = this.field.width - this.ball.width;
-        this.counterLeft++;
+      goal() {
+        this.updateScore();
         this.resetSpeed();
         this.stop();
-      },
-      goalLeft() {
-        this.ball.posX = 0;
-        this.counterRight++;
-        this.resetSpeed();
-        this.stop();
-        //this.updateScore();
       },
       stop() {
-        cancelAnimationFrame(game.play);
-        //window.location.reload();
+        window.cancelAnimateFrame(game.play);
       },
       updateScore() {
         document.getElementById('left-score').textContent = this.counterLeft;
