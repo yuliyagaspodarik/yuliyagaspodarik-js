@@ -69,15 +69,19 @@
   <script src="localStorage.js"></script>
   <script>
     'use strict';
+
+    TModelStorage.prototype = Object.create(TLocalStorage);
+    TModelStorage.prototype.constructor = TModelStorage;
+
     //model
-    function TModelStorage() {
-      this.storage = this.reset();///?
+    function TModelStorage(name) {
+      this.storage = name;
 
       var viewStorage = null;
 
-      this.start = function (view) {
+      this.start = function (view, name) {
         viewStorage = view;
-        //?????this.reset
+        this.storage = this.reset(name);
       };
 
       this.updateView = function () {
@@ -85,13 +89,12 @@
           viewStorage.update();
       };
 
-      this.add = function () { //////where add
+      this.add = function () {
         var valueName = prompt('Введите название', 'Test name').toLowerCase().trim();
         var fHash = {};
 
         if (valueName) {
           fHash.recipe = prompt('Введите рецепт приготовления', 'Test Recipe');
-          //fHash.alcohol = confirm('Ваш напиток алкогольный?') ? 'да' : 'нет';
           return this.addValue(valueName, fHash);
         } else {
           alert('Ввод отменен!')
@@ -105,10 +108,9 @@
 
         if (getValueInfo) {
           var print1 = 'Name: ' + valueName + '<br>';
-          //var print2 = 'Алкогольный: ' + getDrinkInfo.alcohol + '<br>';
-          var print3 = 'Recipe: ' + getValueInfo.recipe + '<br>';
+          var print2 = 'Recipe: ' + getValueInfo.recipe + '<br>';
 
-          resultHTML = print1 + /*print2 +*/ print3;
+          resultHTML = print1 + print2;
         } else {
           resultHTML = 'Ошибка! По вашему запросу ничего не найдено';
         }
@@ -158,6 +160,7 @@
         usedContainer.querySelector('.info').innerHTML = result;
       }
     }
+
     //controller
     function TStorageControllerButtons() {
       var usedStorage = null;
@@ -178,21 +181,20 @@
       };
 
       this.addV = function () {
-        usedStorage.add(/*???*/);
+        usedStorage.add();
       };
 
       this.showV = function () {
-        usedStorage.show(/*???*/);
+        usedStorage.show();
       };
 
       this.delV = function () {
-        usedStorage.del(/*???*/);
+        usedStorage.del();
       };
 
       this.listV = function () {
-        usedStorage.list(/*???*/);
+        usedStorage.list();
       }
-
     }
 
     var drinkStorage = new TModelStorage('DRINKS');
@@ -200,7 +202,7 @@
     var controller1 = new TStorageControllerButtons();
 
     var container1 = document.getElementById('drinks');
-    drinkStorage.start(view1);
+    drinkStorage.start(view1, 'DRINKS');
     view1.start(drinkStorage, container1);
     controller1.start(drinkStorage, container1);
 
@@ -211,7 +213,7 @@
     var controller2 = new TStorageControllerButtons();
 
     var container2 = document.getElementById('food');
-    foodStorage.start(view2);
+    foodStorage.start(view2, 'FOOD');
     view2.start(foodStorage, container2);
     controller2.start(foodStorage, container2);
 

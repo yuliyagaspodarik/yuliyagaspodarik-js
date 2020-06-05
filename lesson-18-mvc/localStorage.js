@@ -1,4 +1,4 @@
-function TLocalStorage(name) {
+function TLocalStorage() {
   var self = this;
   var pHash = {};
 
@@ -6,7 +6,6 @@ function TLocalStorage(name) {
     if (localStorage.getItem(name)) {
       pHash = JSON.parse(localStorage.getItem(name));
     }
-    //hashForRec = {};
     return pHash;
   };
 
