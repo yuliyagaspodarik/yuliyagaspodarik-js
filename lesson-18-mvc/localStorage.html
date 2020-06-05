@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>LocalStorage</title>
+  <style>
+    body {
+      margin: 2em auto;
+      width: 90%;
+      font-family: "Open Sans", serif;
+      font-size: 0.8em;
+    }
+
+    .manage > * {
+      display: block;
+    }
+
+    .manage .info {
+      margin: 0.5em auto;
+      width: 95%;
+      max-width: 320px;
+      color: black;
+    }
+
+    input {
+      margin: 0.5em auto;
+      padding: 0.5em 1em;
+      width: 95%;
+      max-width: 320px;
+      color: white;
+      cursor: pointer;
+    }
+
+    #drinks input {
+      border: 1px solid slategrey;
+      background: darkslategray;
+    }
+
+    #food input {
+      border: 1px solid #b48696;
+      background: #5f4b4c;
+    }
+
+    input:hover {
+      color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div id='drinks' class="manage">
+    <input type='button' class='add-v' value='Добавить напиток'>
+    <input type='button' class='show-v' value='Показать информацию о напитке'>
+    <input type='button' class='del-v' value='Удалить напиток'>
+    <input type='button' class='list-v' value='Показать меню напитков'>
+    <div class="info"></div>
+  </div>
+  <br/>
+  <br/>
+  <div id='food' class="manage">
+    <input type='button' class='add-v' value='Добавить блюдо'>
+    <input type='button' class='show-v' value='Показать информацию о блюде'>
+    <input type='button' class='del-v' value='Удалить блюдо'>
+    <input type='button' class='list-v' value='Показать меню блюд'>
+    <div class="info"></div>
+  </div>
+  <script src="localStorage.js"></script>
+  <script>
+    'use strict';
+    //model
+    function TModelStorage() {
+      this.storage = this.reset();///?
+
+      var viewStorage = null;
+
+      this.start = function (view) {
+        viewStorage = view;
+        //?????this.reset
+      };
+
+      this.updateView = function () {
+        if (viewStorage)
+          viewStorage.update();
+      };
+
+      this.add = function () { //////where add
+        var valueName = prompt('Введите название', 'Test name').toLowerCase().trim();
+        var fHash = {};
+
+        if (valueName) {
+          fHash.recipe = prompt('Введите рецепт приготовления', 'Test Recipe');
+          //fHash.alcohol = confirm('Ваш напиток алкогольный?') ? 'да' : 'нет';
+          return this.addValue(valueName, fHash);
+        } else {
+          alert('Ввод отменен!')
+        }
+      };
+
+      this.show = function () {
+        var valueName = prompt('Введите название: ', '').toLowerCase().trim();
+        var getValueInfo = (valueName) ? this.storage.getValue(valueName) : 0;
+        var resultHTML = '';
+
+        if (getValueInfo) {
+          var print1 = 'Name: ' + valueName + '<br>';
+          //var print2 = 'Алкогольный: ' + getDrinkInfo.alcohol + '<br>';
+          var print3 = 'Recipe: ' + getValueInfo.recipe + '<br>';
+
+          resultHTML = print1 + /*print2 +*/ print3;
+        } else {
+          resultHTML = 'Ошибка! По вашему запросу ничего не найдено';
+        }
+        this.updateView(resultHTML);
+      };
+
+      this.del = function () {
+        var valueName = prompt('Что удалить?').toLowerCase().trim();
+        var delValueInfo = this.storage.deleteValue(valueName);
+        var resultHTML = '';
+
+        if (delValueInfo) {
+          resultHTML = 'Информация о ' + valueName + ' удалена';
+        } else {
+          resultHTML = 'Ошибка! По вашему запросу ничего не найдено';
+        }
+        this.updateView(resultHTML);
+      };
+
+      this.list = function () {
+        var showMenuInfo = this.storage.getKeys();
+        var resultHTML = '';
+
+        if (showMenuInfo.length) {
+          for (var i = 0; i < showMenuInfo.length; i++) {
+            resultHTML += (i + 1) + '. ' + showMenuInfo[i] + '<br>';
+          }
+        } else {
+          resultHTML = 'Меню пустое.';
+        }
+        this.updateView(resultHTML);
+      }
+    }
+
+    //view
+    function TViewStorage() {
+      var usedStorage = null;
+      var usedContainer = null;
+
+      this.start = function (storage, container) {
+        usedStorage = storage;
+        usedContainer = container;
+        usedContainer.querySelector('.info').innerHTML = '';
+      };
+
+      this.update = function (result) {
+        usedContainer.querySelector('.info').innerHTML = result;
+      }
+    }
+    //controller
+    function TStorageControllerButtons() {
+      var usedStorage = null;
+      var usedContainer = null;
+
+      this.start = function (storage, container) {
+        usedStorage = storage;
+        usedContainer = container;
+
+        var addButton = usedContainer.querySelector('.add-v');
+        addButton.addEventListener('click', this.addV);
+        var showButton = usedContainer.querySelector('.show-v');
+        showButton.addEventListener('click', this.showV);
+        var delButton = usedContainer.querySelector('.del-v');
+        delButton.addEventListener('click', this.delV);
+        var listButton = usedContainer.querySelector('.list-v');
+        listButton.addEventListener('click', this.listV);
+      };
+
+      this.addV = function () {
+        usedStorage.add(/*???*/);
+      };
+
+      this.showV = function () {
+        usedStorage.show(/*???*/);
+      };
+
+      this.delV = function () {
+        usedStorage.del(/*???*/);
+      };
+
+      this.listV = function () {
+        usedStorage.list(/*???*/);
+      }
+
+    }
+
+    var drinkStorage = new TModelStorage('DRINKS');
+    var view1 = new TViewStorage();
+    var controller1 = new TStorageControllerButtons();
+
+    var container1 = document.getElementById('drinks');
+    drinkStorage.start(view1);
+    view1.start(drinkStorage, container1);
+    controller1.start(drinkStorage, container1);
+
+    drinkStorage.updateView();
+
+    var foodStorage = new TModelStorage('FOOD');
+    var view2 = new TViewStorage();
+    var controller2 = new TStorageControllerButtons();
+
+    var container2 = document.getElementById('food');
+    foodStorage.start(view2);
+    view2.start(foodStorage, container2);
+    controller2.start(foodStorage, container2);
+
+    foodStorage.updateView();
+
+  </script>
+</body>
+</html>
