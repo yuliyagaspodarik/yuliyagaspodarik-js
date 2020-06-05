@@ -69,7 +69,9 @@
   <script src="localStorage.js"></script>
   <script>
     'use strict';
-
+    //я пыталась реализовать mvc паттерн как в lesson18/example14 и где-то запуталась
+    //TModelStorage - объект класса TLocalStorage
+    //модель - объект класса TModelStorage, представление - объект класса TViewStorage, контроллер - объект класса TStorageControllerButtons
     TModelStorage.prototype = Object.create(TLocalStorage);
     TModelStorage.prototype.constructor = TModelStorage;
 
