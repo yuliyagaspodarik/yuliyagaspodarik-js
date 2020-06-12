@@ -8,6 +8,15 @@
   <script src="AJAXStorage.js"></script>
 </head>
 <body>
+  <div class="backdrop"></div>
+  <div class="modal">
+    <h4 class="modal__title">Please, wait!</h4>
+    <div class="modal__actions">
+      <div id='IProgress'>
+        <div id='IProgressPerc'></div>
+      </div>
+    </div>
+  </div>
   <section class="wrapper">
     <div id="info"></div>
     <form>
@@ -36,7 +45,9 @@
   <script>
     'use strict';
 
+
     var drinkStorage = new TAjaxStorage('DRINK');
+    drinkStorage.readStorage();
 
     function createRecipe() {
       var name = prompt('Введите название напитка', '');

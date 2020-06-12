@@ -2,6 +2,8 @@
 
 var ajaxHandlerScript = "http://fe.it-academy.by/AjaxStringStorage2.php";
 var updatePassword;
+var backdrop = document.querySelector('.backdrop');
+var modal = document.querySelector('.modal');
 
 function TAjaxStorage(nameStorage) {
   /*var self = this;
@@ -50,7 +52,9 @@ TAjaxStorage.prototype.readStorage = function () {
       },
       cache: false,
       success: getReady,
-      error: errorHandler
+      complete: Complete,
+      error: errorHandler,
+      xhrFields: {onprogress: Progress}
     }
   );
 };
@@ -66,7 +70,9 @@ TAjaxStorage.prototype.sendRequest = function () {
       },
       cache: false,
       success: getReady,
-      error: errorHandler
+      complete: Complete,
+      error: errorHandler,
+      xhrFields: {onprogress: Progress}
     }
   );
 };
@@ -82,7 +88,9 @@ TAjaxStorage.prototype.updateStorage = function () {
       },
       cache: false,
       success: updateReady,
-      error: errorHandler
+      complete: Complete,
+      error: errorHandler,
+      xhrFields: {onprogress: Progress}
     }
   );
 
@@ -107,4 +115,19 @@ function getReady(result) {
 
 function errorHandler(jqXHR, statusStr, errorStr) {
   alert(statusStr + ' ' + errorStr);
+}
+
+function Progress(EO) {
+  backdrop.style.display = 'block';
+  modal.style.display = 'block';
+  if (EO.lengthComputable) {
+    var Perc = Math.round(EO.loaded / EO.total * 100);
+    document.getElementById('IProgressPerc').style.width = Perc + '%';
+  }
+}
+
+function Complete() {
+  document.getElementById('IProgress').style.display = 'none';
+  backdrop.style.display = 'none';
+  modal.style.display = 'none';
 }
