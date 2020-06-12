@@ -34,7 +34,9 @@
     </form>
   </section>
   <script>
-    var drinkStorage = new TAjaxStorage('drinks');
+    'use strict';
+
+    var drinkStorage = new TAjaxStorage('DRINK');
 
     function createRecipe() {
       var name = prompt('Введите название напитка', '');
@@ -53,7 +55,7 @@
       var drinkInfo = {
         isAlco: alcoholic,
         recipe: recipe
-      }
+      };
 
       if (drinkInfo) {
         document.getElementById('info').innerHTML = 'Напиток ' + name +
