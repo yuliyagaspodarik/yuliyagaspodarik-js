@@ -1,15 +1,56 @@
-#aside {
-    width: 30%;
-    float: left;
+*:focus {
+    outline: none;
 }
 
-#aside a {
-    font-size: 0.8rem;
+#wrapper {
+    width: 70%;
+    margin: 1rem auto;
+    text-align: center;
+}
+
+#wrapper ul {
+    padding: 0;
+    text-align: left;
+}
+
+#wrapper p {
+    text-align: justify;
+}
+
+#wrapper h1,
+#wrapper h2 {
+    text-transform: uppercase;
+    color: #0099d1;
+}
+
+#wrapper h2 {
+    letter-spacing: 2px;
+}
+
+#wrapper input {
+    padding: 0.5rem 1rem;
+    background: linear-gradient(to top, #00759f, #00aeeb);
+    border-radius: 10px;
+    border: 1px solid #0099d1;
+    color: white;
+    font-weight: 600;
+}
+
+#wrapper input:hover {
+    cursor: pointer;
+    background: linear-gradient(to top, #00aeeb, #00759f);
+    border: 1px solid #0099d1;
 }
 
 a {
     text-decoration: none;
     color: black;
+    display: block;
+}
+
+a:first-letter {
+    font-size: 2rem;
+    color: #0099d1;
 }
 
 ul {

@@ -6,11 +6,7 @@
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div id="wrapper">
-    <h2>Энциклопедия</h2>
-    <p>Что? Зачем? Почему?</p>
-    <input type="button" value="Список статей" onclick="switchToMenuPage()">
-  </div>
+  <div id="wrapper"></div>
   <script src='http://code.jquery.com/jquery-latest.js'></script>
   <script>
     'use strict';
@@ -91,7 +87,9 @@
           page += JSON.parse(data.result);
           console.log(page);
           page += '<input type="button" value="На главную" onclick="switchToMainPage()">';
+          document.getElementById('wrapper').innerHTML = page; //почему-то в этом кейсе, если не добавить в содержимое именно здесь внутри, оно потом теряется и не отображается на странице??
         }
+
           break;
       }
       document.getElementById('wrapper').innerHTML = page;
