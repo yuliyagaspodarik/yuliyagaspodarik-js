@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>ENCYCLO</title>
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div id="wrapper">
+    <h2>Энциклопедия</h2>
+    <p>Что? Зачем? Почему?</p>
+    <input type="button" value="Список статей" onclick="switchToMenuPage()">
+  </div>
+  <script src='http://code.jquery.com/jquery-latest.js'></script>
+  <script>
+    'use strict';
+
+    window.onhashchange = renderNewState;
+
+    const AjaxHandlerScript = "http://fe.it-academy.by/AjaxStringStorage2.php";
+    let articles = [];
+    let pageStr = '';
+    let articlesList = '';
+
+    $.ajax(AjaxHandlerScript, {
+      type: 'POST',
+      data: {
+        f: 'READ',
+        n: 'GASPODARIK_ENCYCLO_LIST_ARTICLES'
+      },
+      success: getArticles,
+      error: errorHandler
+    });
+
+    function getArticles(data) {
+      articles = JSON.parse(data.result).sort(sortName);
+
+      for (let i = 0; i < articles.length; i++) {
+        let article = articles[i];
+        pageStr += '<li><a href="#" id="' + article.id + '" onclick="switchToArticlePage(event)">' + article.name + '</a></li>';
+      }
+      articlesList = '<ul>' + pageStr + '</ul>';
+
+      function sortName(a, b) {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      }
+    }
+
+    function renderNewState() {
+      const hash = window.location.hash;
+
+      let state = decodeURIComponent(hash.substr(1));
+
+      if (state === '') {
+        state = {pageName: 'Main'}
+      } else {
+        state = JSON.parse(state);
+      }
+
+      let page = '';
+
+      switch (state.pageName) {
+        case 'Main':
+          page += '<h2>Энциклопедия</h2>';
+          page += '<p>Что? Зачем? Почему?</p>';
+          page += '<input type="button" value="Список статей" onclick="switchToMenuPage()">\n';
+          break;
+
+        case 'Menu':
+          page += '<h2>Оглавление</h2>';
+          page += articlesList;
+          page += '<input type="button" value="На главную" onclick="switchToMainPage()">';
+          break;
+
+        case 'Article':
+          let request = 'GASPODARIK_ENCYCLO_LIST_ARTICLE' + state.articleID;
+          $.ajax(AjaxHandlerScript, {
+            type: 'POST',
+            data: {
+              f: 'READ',
+              n: request
+            },
+            success: articleInfo,
+            error: errorHandler
+          });
+
+        function articleInfo(data) {
+          page += articlesList;
+          page += JSON.parse(data.result);
+          console.log(page);
+          page += '<input type="button" value="На главную" onclick="switchToMainPage()">';
+        }
+          break;
+      }
+      document.getElementById('wrapper').innerHTML = page;
+    }
+
+    function switchToMenuPage() {
+      switchToState({pageName: 'Menu'});
+    }
+
+    function switchToArticlePage(event) {
+      event.preventDefault();
+      let articleID = event.currentTarget.id;
+      switchToState({pageName: 'Article', articleID: articleID});
+    }
+
+    function switchToMainPage() {
+      switchToState({pageName: 'Main'});
+    }
+
+    function switchToState(state) {
+      location.hash = encodeURIComponent(JSON.stringify(state));
+    }
+
+    function errorHandler(jqXHR, StatusStr, ErrorStr) {
+      alert(StatusStr + ' ' + ErrorStr);
+    }
+
+    renderNewState();
+  </script>
+</body>
+</html>

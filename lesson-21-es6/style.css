@@ -1,0 +1,17 @@
+#aside {
+    width: 30%;
+    float: left;
+}
+
+#aside a {
+    font-size: 0.8rem;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style-type: none;
+}
