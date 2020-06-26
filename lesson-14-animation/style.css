@@ -1,0 +1,67 @@
+*:focus {
+    outline: none;
+}
+
+#wrapper {
+    position: relative;
+}
+
+#score {
+    width: 800px;
+    font-family: "Arial", sans-serif;
+    font-size: 3rem;
+    text-align: center;
+}
+
+#field {
+    position: relative;
+    background-color: yellow;
+    border: 1px solid saddlebrown;
+    width: 800px;
+    height: 400px;
+}
+
+input {
+    position: absolute;
+    top: 2rem;
+    left: 0;
+    padding: 1px 20px;
+    background: linear-gradient(to top, #dfdfdf, #f3f3f3);
+    border: 0;
+    font-size: 1rem;
+}
+
+input:hover {
+    cursor: pointer;
+}
+
+input:active {
+    background: linear-gradient(to top, #f3f3f3, #dfdfdf);
+}
+
+#scroll-left,
+#scroll-right {
+    position: absolute;
+    border: 0;
+    width: 15px;
+    height: 150px;
+}
+
+#scroll-left {
+    background-color: #17b438;
+}
+
+#scroll-right {
+    background-color: indigo;
+}
+
+#ball {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border: 0;
+    border-radius: 50%;
+    will-change: transform;
+    transform: translateZ(0);
+}
